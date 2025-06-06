@@ -1,23 +1,22 @@
-import imutils #Resize
+import imutils 
 import cv2
 
-redLower= (0,172,2)
-redUpper = (156,255,255)
+redLower= (0,84,182)
+redUpper = (179,255,255)
 
-camera=cv2.VideoCapture(0) #Cam Ini
+camera=cv2.VideoCapture(0)
 
 while True:
 
-        (grabbed, frame) = camera.read() #Read the Frame
+        (grabbed, frame) = camera.read() 
 
-        frame = imutils.resize(frame, width=500) #resize
+        frame = imutils.resize(frame, width=500) 
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV) 
 
-        mask = cv2.inRange(hsv, redLower, redUpper) #Mask the blue colour
+        mask = cv2.inRange(hsv, redLower, redUpper)
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
-
 
         cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
                 cv2.CHAIN_APPROX_SIMPLE)[-2]
@@ -44,9 +43,10 @@ while True:
                                 else:
                                         print("Stop")
         cv2.imshow("Frame", frame)
-        key = cv2.waitKey(1) & 0xFF
+        key = cv2.waitKey(1)
         if key == ord("q"):
                 break
+
 
 camera.release()
 cv2.destroyAllWindows()
